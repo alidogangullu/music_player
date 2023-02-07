@@ -39,6 +39,9 @@ dependencies:
   desktop_window: ^0.4.0
   window_manager: ^0.3.0
   audioplayers: ^3.0.1
+  metadata_god: ^0.3.2
+  mp3_info: ^0.2.0
+  flac_metadata: ^1.0.4
 
 dev_dependencies:
   flutter_test:

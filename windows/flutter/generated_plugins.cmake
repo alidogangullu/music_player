@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   desktop_window
+  metadata_god
   screen_retriever
   system_theme
   window_manager
