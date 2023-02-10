@@ -42,6 +42,7 @@ dependencies:
   metadata_god: ^0.3.2
   mp3_info: ^0.2.0
   flac_metadata: ^1.0.4
+  flutter_desktop_folder_picker: ^0.0.1
 
 dev_dependencies:
   flutter_test:

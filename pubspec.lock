@@ -177,6 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
+  filepicker_windows:
+    dependency: transitive
+    description:
+      name: filepicker_windows
+      sha256: fa8a8ce9696c977b78d037d7d6731dbb0b3dae6e274d35cdf2f15f0294bb55dd
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
   flac_metadata:
     dependency: "direct main"
     description:
@@ -198,6 +206,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_desktop_folder_picker:
+    dependency: "direct main"
+    description:
+      name: flutter_desktop_folder_picker
+      sha256: "6352d589721714d4a5870e1104e3ac0edd686186c66cb9c16b37800d0ca459b5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -606,10 +622,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: c9ebe7ee4ab0c2194e65d3a07d8c54c5d00bb001b76081c4a04cdb8448b59e46
+      sha256: "6b75ac2ddd42f5c226fdaf4498a2b04071c06f1f2b8f7ab1c3f77cc7f2285ff1"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.3"
+    version: "2.7.0"
   window_manager:
     dependency: "direct main"
     description:

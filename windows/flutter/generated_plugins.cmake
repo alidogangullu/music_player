@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   desktop_window
+  flutter_desktop_folder_picker
   metadata_god
   screen_retriever
   system_theme

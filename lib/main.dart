@@ -5,6 +5,8 @@ import 'package:music_player/player.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'files.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
@@ -25,13 +27,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         accentColor: SystemTheme.accentColor.accent.toAccentColor(),
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key});
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -51,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
           PaneItem(
             icon: const Icon(FluentIcons.play),
             title: const Text("Player"),
-            body: MusicPlayer(),
+            body: const MusicPlayer(),
           ),
           PaneItem(
             icon: const Icon(FluentIcons.edit),
@@ -70,24 +72,6 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         },
       ),
-    );
-  }
-}
-
-
-
-class EditFiles extends StatefulWidget {
-  const EditFiles({Key? key}) : super(key: key);
-
-  @override
-  State<EditFiles> createState() => _EditFilesState();
-}
-
-class _EditFilesState extends State<EditFiles> {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Import and Delete Files"),
     );
   }
 }
