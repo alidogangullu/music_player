@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audioplayers_windows
+  dart_vlc
   desktop_window
   flutter_desktop_folder_picker
   metadata_god

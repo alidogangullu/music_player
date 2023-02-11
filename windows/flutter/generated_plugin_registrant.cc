@@ -6,7 +6,7 @@
 
 #include "generated_plugin_registrant.h"
 
-#include <audioplayers_windows/audioplayers_windows_plugin.h>
+#include <dart_vlc/dart_vlc_plugin.h>
 #include <desktop_window/desktop_window_plugin.h>
 #include <flutter_desktop_folder_picker/flutter_desktop_folder_picker_plugin.h>
 #include <metadata_god/metadata_god_plugin_c_api.h>
@@ -15,8 +15,8 @@
 #include <window_manager/window_manager_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
-  AudioplayersWindowsPluginRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("AudioplayersWindowsPlugin"));
+  DartVlcPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("DartVlcPlugin"));
   DesktopWindowPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("DesktopWindowPlugin"));
   FlutterDesktopFolderPickerPluginRegisterWithRegistrar(

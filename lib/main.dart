@@ -1,10 +1,9 @@
 import 'dart:io';
-
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:music_player/player.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
-
 import 'files.dart';
 
 void main() async{
@@ -14,6 +13,7 @@ void main() async{
     WindowManager.instance.setMinimumSize(const Size(600, 400));
     WindowManager.instance.setMaximumSize(const Size(600, 400));
   }
+  DartVLC.initialize();
   runApp(const MyApp());
 }
 

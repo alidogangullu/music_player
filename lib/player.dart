@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:flac_metadata/flacstream.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +19,8 @@ class MusicPlayer extends StatefulWidget {
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {
-  final player = AudioPlayer();
+  final player = Player(id: 69420,
+    commandlineArguments: ['--no-video'],);
   late MP3Info mp3;
 
   String filePath = "";
@@ -41,41 +42,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
   bool isPlaying = false;
   bool isSeeking = false;
   bool pathAdded = false;
-  PlayerState playerState = PlayerState.stopped;
-
-  StreamSubscription? _positionSubscription;
-  StreamSubscription? _audioPlayerStateSubscription;
 
   Future play() async {
-    await player.play(DeviceFileSource(filePath));
-    setState(() {
-      isPlaying = true;
-      playerState = PlayerState.playing;
-    });
-  }
-
-  Future resume() async {
     if (pathAdded) {
-      await player.resume();
+      player.play();
       setState(() {
         isPlaying = true;
-        playerState = PlayerState.playing;
       });
     }
   }
 
   Future pause() async {
-    await player.pause();
-    isPlaying = false;
-    setState(() => playerState = PlayerState.paused);
+    player.pause();
+    setState(() {
+      isPlaying = false;
+    });
   }
 
   Future stop() async {
-    await player.stop();
+    player.stop();
     setState(() {
       isPlaying = false;
-      playerState = PlayerState.stopped;
-      position = const Duration();
     });
   }
 
@@ -88,6 +75,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       filePath = EditFiles.files.first;
       initFile();
     }
+    play();
   }
 
   void previous() {
@@ -99,6 +87,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       filePath = EditFiles.files.last;
       initFile();
     }
+    play();
   }
 
   Future<void> getMetadata() async {
@@ -125,47 +114,52 @@ class _MusicPlayerState extends State<MusicPlayer> {
     }
 
     await MetadataGod.getMetadata(filePath).then((value) {
-      albumArt = value!.picture!.data;
-      albumName = value.album!;
-      artistName = value.artist!;
-      songName = value.title!;
-    });
-  }
-
-  void initAudioPlayer() {
-    _audioPlayerStateSubscription =
-        player.onDurationChanged.listen((Duration d) {
-      duration = d;
-      _positionSubscription =
-          player.onPositionChanged.listen((p) => setState(() {
-                position = p;
-                if (position >= duration) {
-                  isPlaying = false;
-                }
-              }));
-    }, onError: (msg) {
       setState(() {
-        playerState = PlayerState.stopped;
-        isPlaying = false;
-        duration = const Duration(seconds: 0);
-        position = const Duration(seconds: 0);
+        if(value!.picture != null) {
+          albumArt = value.picture!.data;
+          isArtNull=false;
+        } else {
+          isArtNull = true;
+        }
+
+        if(value.album != null) {
+          albumName = value.album!;
+        } else {
+          albumName = "";
+        }
+
+        if(value.artist != null) {
+          artistName = value.artist!;
+        } else {
+          artistName = "";
+        }
+
+        if(value.title != null) {
+          songName = value.title!;
+        } else {
+          songName = "";
+        }
       });
     });
   }
 
   void initFile() {
-    player.setSource(DeviceFileSource(filePath));
-    getMetadata().whenComplete(() {
-      if (albumArt != null) {
-        setState(() {
-          isArtNull = false;
-        });
-      }
-      if (songName != "null" || albumName != "null" || artistName != "null") {
-        setState(() {});
-      }
+    player.open(
+      Playlist(
+        medias: [
+          Media.file(File(filePath)),
+        ],
+      ),
+      autoStart: false,
+    );
+    getMetadata();
+  }
+
+  void initAudioPlayer() {
+    player.positionStream.listen((value) {
       setState(() {
-        play();
+        position = value.position!;
+        duration = value.duration!;
       });
     });
   }
@@ -176,16 +170,17 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
     if (EditFiles.files.isNotEmpty) {
       filePath = EditFiles.files.first;
+      pathAdded = true;
       initFile();
       initAudioPlayer();
-      pathAdded = true;
+
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    player.stop();
+    player.dispose();
   }
 
   @override
@@ -196,7 +191,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 30, 35, 0),
+              padding: const EdgeInsets.fromLTRB(0, 30, 35, 10),
               child: Column(
                 children: [
                   SizedBox(
@@ -216,34 +211,37 @@ class _MusicPlayerState extends State<MusicPlayer> {
             ),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(songName),
-                  Text(artistName),
-                  Text(albumName),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      children: [
-                        Text(
-                          pathAdded ? "${bitrate}kbps" : "",
-                          style: const TextStyle(fontSize: 11),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          pathAdded
-                              ? "${bitsPerSample}Bit ${sampleRate}Hz"
-                              : "",
-                          style: const TextStyle(fontSize: 11),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 195, maxWidth: 195),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(songName),
+                    Text(artistName),
+                    Text(albumName),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        children: [
+                          Text(
+                            pathAdded ? "${bitrate}kbps" : "",
+                            style: const TextStyle(fontSize: 11),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            pathAdded
+                                ? "${bitsPerSample}Bit ${sampleRate}Hz"
+                                : "",
+                            style: const TextStyle(fontSize: 11),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -264,7 +262,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 isSeeking = true;
               },
               onChangeEnd: (double value) async {
-                await player.seek(Duration(milliseconds: value.round()));
+                player.seek(Duration(milliseconds: value.round()));
                 isSeeking = false;
               },
               min: 0,
@@ -287,7 +285,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     icon: const Icon(FluentIcons.pause), onPressed: pause)
                 : IconButton(
                     icon: const Icon(FluentIcons.play_solid),
-                    onPressed: resume),
+                    onPressed: play),
             IconButton(icon: const Icon(FluentIcons.next), onPressed: next),
           ],
         ),
