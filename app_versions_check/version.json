@@ -1,0 +1,10 @@
+{
+  "name": "Music Player",
+  "version": 1.1,
+  "description": [
+    "Added AutoUpdate",
+    "Bug Fixes"
+  ],
+  "windows_file_name": "installers/windows/mpsetup.exe",
+  "inherit": true
+}
