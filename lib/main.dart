@@ -5,10 +5,10 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:http/http.dart' as http;
-import '../application.dart';
-import 'files.dart';
-import 'help.dart';
-import 'player.dart';
+import 'application.dart';
+import 'screens/files.dart';
+import 'screens/help.dart';
+import 'screens/player.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         accentColor: SystemTheme.accentColor.accent.toAccentColor(),
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
@@ -58,7 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _checkForUpdates() async {
     final jsonVal = await loadJsonFromGithub();
     MyHomePage.updateInfoJson = jsonVal;
-    print("Response: $jsonVal");
     final githubVersion = jsonVal['version'];
     if (githubVersion > ApplicationConfig.currentVersion) {
       setState(() {
