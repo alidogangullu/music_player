@@ -5,7 +5,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:http/http.dart' as http;
+import '../application.dart';
 import 'files.dart';
+import 'help.dart';
 import 'player.dart';
 
 void main() async{
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         accentColor: SystemTheme.accentColor.accent.toAccentColor(),
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -37,32 +39,46 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
+  static bool isUpdateCanceled = false;
+  static var updateInfoJson;
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int index = 0;
-
-  Future<void> _checkForUpdates() async {
-    final jsonVal = await loadJsonFromGithub();
-    debugPrint("Response: $jsonVal");
-    setState(() {
-      index = 2;
-    });
-    //showUpdateDialog(jsonVal);
-  }
+  int index = 1;
 
   Future<Map<String, dynamic>> loadJsonFromGithub() async {
     final response = await http.read(Uri.parse(
-        "https://raw.githubusercontent.com/AgnelSelvan/Blogs/main/in_app_update_flutter_desktop/app_versions_check/version.json"));
+        "https://raw.githubusercontent.com/alidogangullu/music_player/master/app_versions_check/version.json"));
     return jsonDecode(response);
+  }
+
+  Future<void> _checkForUpdates() async {
+    final jsonVal = await loadJsonFromGithub();
+    MyHomePage.updateInfoJson = jsonVal;
+    print("Response: $jsonVal");
+    final githubVersion = jsonVal['version'];
+    if (githubVersion > ApplicationConfig.currentVersion) {
+      setState(() {
+      index = 2;
+    });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if(!MyHomePage.isUpdateCanceled) {
+      _checkForUpdates();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      appBar: const NavigationAppBar(title: Text("Simple Music Player")),
+      appBar: const NavigationAppBar(title: Text("Music Player")),
       pane: NavigationPane(
         selected: index,
         displayMode: PaneDisplayMode.compact,
@@ -89,22 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
           });
         },
       ),
-    );
-  }
-}
-
-class Help extends StatefulWidget {
-  const Help({Key? key}) : super(key: key);
-
-  @override
-  State<Help> createState() => _HelpState();
-}
-
-class _HelpState extends State<Help> {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Help"),
     );
   }
 }
