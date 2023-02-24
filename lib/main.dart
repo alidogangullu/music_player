@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:http/http.dart' as http;
 import 'application.dart';
@@ -16,6 +15,7 @@ void main() async{
   if (Platform.isWindows) {
     WindowManager.instance.setMinimumSize(const Size(600, 400));
     WindowManager.instance.setMaximumSize(const Size(600, 400));
+    WindowManager.instance.center();
   }
   DartVLC.initialize();
   runApp(const MyApp());
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return FluentApp(
       title: 'Music Player',
       theme: ThemeData(
-        accentColor: SystemTheme.accentColor.accent.toAccentColor(),
+        accentColor: Colors.grey.toAccentColor(),
       ),
       home: const MyHomePage(),
     );
@@ -77,10 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      appBar: const NavigationAppBar(title: Text("Music Player")),
+      appBar: const NavigationAppBar(title: Text("Music Player"),),
       pane: NavigationPane(
         selected: index,
         displayMode: PaneDisplayMode.compact,
+        indicator: const StickyNavigationIndicator(color: Colors.grey,),
         items: [
           PaneItem(
             icon: const Icon(FluentIcons.play),

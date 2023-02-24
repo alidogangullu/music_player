@@ -1,9 +1,10 @@
 {
   "name": "Music Player",
-  "version": 1.1,
+  "version": 1.2,
   "description": [
-    "Added AutoUpdate",
-    "Bug Fixes"
+    "Added Music Files Window (playlist)",
+    "Program starts center of the screen",
+    "Added theme color change based on album cover"
   ],
   "windows_file_name": "installers/windows/mpsetup.exe",
   "inherit": true

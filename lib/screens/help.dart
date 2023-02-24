@@ -132,7 +132,7 @@ class _HelpState extends State<Help> {
         if (version <= ApplicationConfig.currentVersion &&
                 !MyHomePage.isUpdateCanceled ||
             MyHomePage.isUpdateCanceled)
-          const Text("Please choose a directory and begin playing music files."),
+          Text("Please choose a directory and begin playing music files. " + "v${ApplicationConfig.currentVersion}"),
       ],
     );
   }
