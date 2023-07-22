@@ -34,15 +34,16 @@ dependencies:
   system_theme: ^2.1.0
   desktop_window: ^0.4.0
   window_manager: ^0.3.0
-  metadata_god: ^0.3.2
+  metadata_god: ^0.5.0
   mp3_info: ^0.2.0
   flac_metadata: ^1.0.4
   flutter_desktop_folder_picker: ^0.0.1
   dart_vlc: ^0.4.0
-  dio: ^4.0.6
-  http: ^0.13.5
+  dio: ^5.3.0
+  http: ^1.1.0
   path_provider: ^2.0.12
   palette_generator: ^0.3.3+2
+  flutter_riverpod: ^2.3.6
 
 dev_dependencies:
   flutter_test:

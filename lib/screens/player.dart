@@ -132,11 +132,11 @@ class _MusicPlayerState extends State<MusicPlayer> {
           .round();
     }
 
-    await MetadataGod.getMetadata(playingFilePath).then((value) {
+    await MetadataGod.readMetadata(file: playingFilePath).then((value) {
       albumArt = null;
       isArtNull = true;
       setState(() {
-        if (value!.picture != null) {
+        if (value.picture != null) {
           albumArt = value.picture!.data;
           isArtNull = false;
         } else {
@@ -197,6 +197,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       initFile();
       initAudioPlayer();
     }
+    MetadataGod.initialize();
   }
 
   @override

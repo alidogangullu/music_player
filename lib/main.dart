@@ -9,7 +9,7 @@ import 'screens/files.dart';
 import 'screens/help.dart';
 import 'screens/player.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
   if (Platform.isWindows) {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FluentApp(
       title: 'Music Player',
-      theme: ThemeData(
+      theme: FluentThemeData(
         accentColor: Colors.grey.toAccentColor(),
       ),
       home: const MyHomePage(),
@@ -61,15 +61,15 @@ class _MyHomePageState extends State<MyHomePage> {
     final githubVersion = jsonVal['version'];
     if (githubVersion > ApplicationConfig.currentVersion) {
       setState(() {
-      index = 2;
-    });
+        index = 2;
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    if(!MyHomePage.isUpdateCanceled) {
+    if (!MyHomePage.isUpdateCanceled) {
       _checkForUpdates();
     }
   }
@@ -77,11 +77,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      appBar: const NavigationAppBar(title: Text("Music Player"),),
+      appBar: const NavigationAppBar(
+        title: Text("Music Player"),
+        leading: Icon(FluentIcons.music_note),
+      ),
       pane: NavigationPane(
         selected: index,
         displayMode: PaneDisplayMode.compact,
-        indicator: const StickyNavigationIndicator(color: Colors.grey,),
+        indicator: const StickyNavigationIndicator(
+          color: Colors.grey,
+        ),
         items: [
           PaneItem(
             icon: const Icon(FluentIcons.play),
