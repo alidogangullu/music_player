@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Music Player"
-#define MyAppVersion "1.2"
+#define MyAppVersion "2.0"
 #define MyAppPublisher "ADG"
 #define MyAppExeName "music_player.exe"
 
@@ -38,8 +38,8 @@ Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\f
 Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\libvlc.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\libvlccore.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\metadata_god_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\rust.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\metadata_god.dll"; DestDir: "{app}"; Flags: ignoreversion
+//Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\rust.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\screen_retriever_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\system_theme_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Projects\FlutterProjects\music_player\build\windows\runner\Release\window_manager_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
