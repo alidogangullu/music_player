@@ -1,10 +1,10 @@
 {
   "name": "Music Player",
-  "version": 1.2,
+  "version": 2.0,
   "description": [
-    "Added Music Files Window (playlist)",
-    "Program starts center of the screen",
-    "Added theme color change based on album cover"
+    "Added music icon on navigation bar",
+    "Player can now play music in other tabs as well",
+    "In the background, changes have been made to the player."
   ],
   "windows_file_name": "installers/windows/mpsetup.exe",
   "inherit": true

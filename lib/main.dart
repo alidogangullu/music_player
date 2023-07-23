@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:http/http.dart' as http;
 import 'application.dart';
@@ -26,12 +27,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FluentApp(
-      title: 'Music Player',
-      theme: FluentThemeData(
-        accentColor: Colors.grey.toAccentColor(),
+    return ProviderScope(
+      child: FluentApp(
+        title: 'Music Player',
+        theme: FluentThemeData(
+          accentColor: Colors.grey.toAccentColor(),
+        ),
+        home: const MyHomePage(),
       ),
-      home: const MyHomePage(),
     );
   }
 }
@@ -106,6 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         onChanged: (newIndex) {
           setState(() {
+            if(EditFiles.files.isEmpty && newIndex == 0) {
+              newIndex = 1;
+            }
             index = newIndex;
           });
         },
