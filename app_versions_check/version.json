@@ -3,8 +3,8 @@
   "version": 2.0,
   "description": [
     "Added music icon on navigation bar",
-    "Player can now play music in other tabs as well",
-    "In the background, changes have been made to the player."
+    "Music player can now play music in other tabs as well",
+    "Changes have been made to the player on the background for optimization"
   ],
   "windows_file_name": "installers/windows/mpsetup.exe",
   "inherit": true
