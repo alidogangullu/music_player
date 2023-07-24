@@ -1,16 +1,19 @@
 import 'dart:io';
+import 'package:dart_vlc/dart_vlc.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_desktop_folder_picker/flutter_desktop_folder_picker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:music_player/musicPlayer.dart';
 
-class EditFiles extends StatefulWidget {
+class EditFiles extends ConsumerStatefulWidget {
   const EditFiles({Key? key}) : super(key: key);
   static List<String> files = [];
 
   @override
-  State<EditFiles> createState() => _EditFilesState();
+  ConsumerState createState() => _EditFilesState();
 }
 
-class _EditFilesState extends State<EditFiles> {
+class _EditFilesState extends ConsumerState<EditFiles> {
   Future<List<String>> getFilePaths(String directory) async {
     final dir = Directory(directory);
     final List<String> filePaths = [];
@@ -31,13 +34,55 @@ class _EditFilesState extends State<EditFiles> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Button(
-        onPressed: () async {
-          String? path =
-              await FlutterDesktopFolderPicker.openFolderPickerDialog();
-          EditFiles.files = await getFilePaths(path!);
-        },
-        child: const Text("Select Music Folder"),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Button(
+              onPressed: () async {
+                String? path =
+                    await FlutterDesktopFolderPicker.openFolderPickerDialog();
+                EditFiles.files = await getFilePaths(path!);
+                setState(() { });
+              },
+              child: const Text("Select Music Folder"),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: EditFiles.files.length,
+              itemBuilder: (BuildContext context, int index) {
+
+                return Card(
+                  child: ListTile(
+                    title: const SizedBox(height: 0,),
+                    subtitle: Text(EditFiles.files[index].split(r'\').last),
+                    leading: const Icon(FluentIcons.music_note),
+                    trailing: IconButton(
+                      onPressed: () {
+                        ref.watch(musicPlayerProvider).playingFilePath = EditFiles.files[index];
+
+                        ref.watch(musicPlayerProvider).player.open(
+                          Playlist(
+                            medias: [
+                              Media.file(File(ref.watch(musicPlayerProvider).playingFilePath)),
+                            ],
+                          ),
+                          autoStart: true,
+                        );
+
+                        ref.watch(musicPlayerProvider).isPlaying = true;
+                        ref.read(musicPlayerProvider.notifier).getMetadata();
+                      },
+                      icon: const Icon(FluentIcons.play),
+                    ),
+                  ),
+                );
+              },
+
+            ),
+          ),
+        ],
       ),
     );
   }
