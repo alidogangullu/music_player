@@ -48,6 +48,7 @@ class _EditFilesState extends ConsumerState<EditFiles> {
               child: const Text("Select Music Folder"),
             ),
           ),
+          if (EditFiles.files.isNotEmpty)
           Expanded(
             child: ListView.builder(
               itemCount: EditFiles.files.length,
