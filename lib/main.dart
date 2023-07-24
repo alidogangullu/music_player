@@ -1,25 +1,29 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:dart_vlc/dart_vlc.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:window_manager/window_manager.dart';
 import 'package:http/http.dart' as http;
 import 'application.dart';
 import 'screens/files.dart';
 import 'screens/help.dart';
 import 'screens/player.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
-  if (Platform.isWindows) {
-    WindowManager.instance.setMinimumSize(const Size(600, 400));
-    WindowManager.instance.setMaximumSize(const Size(600, 400));
-    WindowManager.instance.center();
-  }
   DartVLC.initialize();
   runApp(const MyApp());
+  // Add this code below
+
+  doWhenWindowReady(() {
+    const initialSize = Size(600, 400);
+    appWindow.minSize = initialSize;
+    appWindow.maxSize = initialSize;
+    appWindow.size = initialSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.title = "Music Player";
+    appWindow.show();
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -29,12 +33,46 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: FluentApp(
+        debugShowCheckedModeBanner: false,
         title: 'Music Player',
         theme: FluentThemeData(
           accentColor: Colors.grey.toAccentColor(),
         ),
         home: const MyHomePage(),
       ),
+    );
+  }
+}
+
+final buttonColors = WindowButtonColors(
+    iconNormal: const Color(0xFF805306),
+    mouseOver: const Color(0xFFF6A00C),
+    mouseDown: const Color(0xFF805306),
+    iconMouseOver: const Color(0xFF805306),
+    iconMouseDown: const Color(0xFFFFD500));
+
+final closeButtonColors = WindowButtonColors(
+    mouseOver: const Color(0xFFD32F2F),
+    mouseDown: const Color(0xFFB71C1C),
+    iconNormal: const Color(0xFF805306),
+    iconMouseOver: Colors.white);
+
+class WindowButtons extends StatefulWidget {
+  const WindowButtons({Key? key}) : super(key: key);
+
+  @override
+  _WindowButtonsState createState() => _WindowButtonsState();
+}
+
+class _WindowButtonsState extends State<WindowButtons> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        MinimizeWindowButton(colors: buttonColors),
+        CloseWindowButton(colors: closeButtonColors),
+      ],
     );
   }
 }
@@ -80,9 +118,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      appBar: const NavigationAppBar(
-        title: Text("Music Player"),
-        leading: Icon(FluentIcons.music_note),
+      appBar: NavigationAppBar(
+        title: const Text("Music Player"),
+        leading: const Icon(FluentIcons.music_note),
+        actions: WindowTitleBarBox(
+          child: Row(
+            children: [Expanded(child: MoveWindow()), const WindowButtons()],
+          ),
+        ),
       ),
       pane: NavigationPane(
         selected: index,
