@@ -1,3 +1,3 @@
 class ApplicationConfig {
-  static double currentVersion = 2.0;
+  static double currentVersion = 2.1;
 }

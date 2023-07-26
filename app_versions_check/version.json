@@ -1,10 +1,14 @@
 {
   "name": "Music Player",
-  "version": 2.0,
+  "version": 2.1,
   "description": [
+    "----2.0---",
     "Added music icon on navigation bar",
     "Music player can now play music in other tabs as well",
-    "Changes have been made to the player on the background for optimization"
+    "----2.1---",
+    "Invisible windows title bar",
+    "New icon",
+    "Added list of music files in selected folder on Edit tab"
   ],
   "windows_file_name": "installers/windows/mpsetup.exe",
   "inherit": true

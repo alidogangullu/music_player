@@ -56,77 +56,88 @@ class _HelpState extends State<Help> {
       children: [
         if (version > ApplicationConfig.currentVersion &&
             !MyHomePage.isUpdateCanceled)
-          SizedBox(
-            width: 300,
-            height: 300,
-            child: ContentDialog(
-              content: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const Text("New Version Found!"),
-                    Text("Latest Version $version"),
-                    Text(
-                        "Current Version: ${ApplicationConfig.currentVersion}"),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("What's new in $version"),
-                        ...updates
-                            .map((e) => Row(
-                                  children: [
-                                    Container(
-                                      width: 4,
-                                      height: 4,
-                                      decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                    ),
-                                    const SizedBox(
-                                      width: 3,
-                                    ),
-                                    Text(
-                                      "$e",
-                                    ),
-                                  ],
-                                ))
-                            .toList(),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                Button(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      MyHomePage.isUpdateCanceled = true;
-                      Navigator.push(
-                          context,
-                          FluentPageRoute(
-                              builder: (context) => const MyHomePage()));
-                    }),
-                if (!isDownloading && downloadProgress != 100)
-                  FilledButton(
-                    onPressed: () {
-                      downloadNewVersion(
-                          MyHomePage.updateInfoJson["windows_file_name"]);
-                    },
-                    child: const Text("Update"),
-                  ),
-                if (isDownloading && downloadProgress != 100)
-                  Column(
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: SizedBox(
+              width: 500,
+              height: 400,
+              child: ContentDialog(
+                content: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      ProgressRing(
-                        value: downloadProgress,
+                      const Text("New Version Found!"),
+                      Text("Latest Version $version"),
+                      Text(
+                          "Current Version: ${ApplicationConfig.currentVersion}"),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("What's new in $version"),
+                          const SizedBox(height: 5),
+                          ...updates
+                              .map((e) => Column(
+                                children: [
+                                  Row(
+                                        children: [
+                                          Container(
+                                            width: 4,
+                                            height: 4,
+                                            decoration: BoxDecoration(
+                                                color: Colors.blue,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                          ),
+                                          const SizedBox(
+                                            width: 3,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              "$e", style: TextStyle(height: 1),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                  const SizedBox(height: 5)
+                                ],
+                              ))
+                              .toList(),
+                        ],
                       ),
                     ],
                   ),
-                if (downloadProgress == 100) const Center(child: Text('Installing...')),
-              ],
+                ),
+                actions: [
+                  Button(
+                      child: const Text('Cancel'),
+                      onPressed: () {
+                        MyHomePage.isUpdateCanceled = true;
+                        Navigator.push(
+                            context,
+                            FluentPageRoute(
+                                builder: (context) => const MyHomePage()));
+                      }),
+                  if (!isDownloading && downloadProgress != 100)
+                    FilledButton(
+                      onPressed: () {
+                        downloadNewVersion(
+                            MyHomePage.updateInfoJson["windows_file_name"]);
+                      },
+                      child: const Text("Update"),
+                    ),
+                  if (isDownloading && downloadProgress != 100)
+                    Column(
+                      children: [
+                        ProgressRing(
+                          value: downloadProgress,
+                        ),
+                      ],
+                    ),
+                  if (downloadProgress == 100) const Center(child: Text('Installing...')),
+                ],
+              ),
             ),
           ),
         if (version <= ApplicationConfig.currentVersion &&
