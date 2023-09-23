@@ -11,7 +11,7 @@ This is a simple music player built using Flutter and Fluent UI. It allows you t
 - Next and previous track navigation
 - Play and pause button
 - Theme color changes based on album cover
-- automatically download the installation package when updates are available
+- Automatically download the new version when updates are available
 
 ## Discontinued
 
